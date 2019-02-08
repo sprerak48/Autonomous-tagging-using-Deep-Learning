@@ -1,0 +1,1734 @@
+Id,OwnerUserId,Score,Title,Body
+2648930,152168,0,Is there a performance hit to binding a relative source vs a direct object?,"<p>I'm currently working on my first WPF application, and I'm curious as to whether I'll hit a snag down the line with performance by doing something like this:</p>
+ 
+ <pre><code>Dim binding As New Binding(""PropertyOnObject.Property1.Property2.Value"")
+ binding.Source = Object
+ </code></pre>
+ 
+ <p>vs doing</p>
+ 
+ <pre><code>Dim binding As New Binding(""Value"")
+ binding.Source = Object.PropertyOnObject.Property1.Property2
+ </code></pre>
+ 
+ <p>My objects are fairly dynamic, in that PropertyOnObject can change(and thus changing Property1 and Property2), so it makes sense to do it the first way. Is there a performance penalty for that, though?</p>"
+2649240,14122,4,Bash file descriptor leak,"<p>I get a file descriptor leak when running the following code:</p>
+ 
+ <pre><code>function get_fd_count() {
+  local fds
+  cd /proc/$$/fd; fds=( * ) # avoid a StackOverflow source colorizer bug
+  echo ""${#fds[@]}""
+ }
+ 
+ function fd_leak_func() {
+  while : ; do
+  echo ""&gt;&gt; Current FDs: $(get_fd_count)""
+  read retval new_state &lt; &lt;(set +e; new_state=$(echo foo); retval=$?; printf ""%d %s\n"" $retval $new_state)
+  done
+ }
+ 
+ fd_leak_func
+ </code></pre>
+ 
+ <p>Tested on both 3.2.25 and 4.0.28.</p>
+ 
+ <p>This only happens when the loop is happening within a function; every time we return to top-level context, the extra file descriptors are closed.</p>
+ 
+ <p>Is this intended behavior? More to the point, are workarounds available?</p>
+ 
+ <hr>
+ 
+ <p>Followup: After reporting to the bash-bug mailing list, this was confirmed as a bug. Chet indicated that a fix will be included in the next release (as of 4/17/2010).</p>"
+2649250,318032,8,How do Ruby and Python implement their interactive consoles?,"<p>When implementing the interpreter for my programming language I first thought of a simple console window which allows the user to enter some code which is then executed as a standalone program as a shell.</p>
+ 
+ <p>But there are severe problems: If every line of code the user enters is handled as a standalone program, it has to go through the tokenizer and parser and is then just executed by the interpreter - what about functions then? </p>
+ 
+ <ul>
+ <li>How can the Python/Ruby interactive consoles (IDLE, irb) ""share"" the code? How is the code entered handled?</li>
+ </ul>
+ 
+ <p>Example:</p>
+ 
+ <pre><code>&gt;&gt; def x:
+ &gt;&gt; print(""Blah"")
+ &gt;&gt; 
+ &gt;&gt; x()
+ </code></pre>
+ 
+ <p>Where is the function stored so it can be called at any time again?</p>
+ 
+ <p><strong>How can the interactive console take everything entered as obviously one program without executing everything over and over again?</strong></p>"
+2649290,244523,0,ScaleTransform and Image size,"<p>I have a Canvas which has an image as background. When I do the ScaleTransform to increase the size of the image, the image blows out of the Canvas. Although I increase the size, I don't want the image to go out of the Canvas, I just want it to fit inside the Canvas. How to fix this issue in WPF?</p>"
+2649320,288280,0,"Databinding gives ""System.Data.DataRowView"" instead of actual values","<p>This is my code:</p>
+ 
+ <pre><code> string SQL = ""SELECT email FROM members WHERE subscribe=true"";
+  string myConnString = Application[""ConnectionString""].ToString();
+ 
+  OleDbConnection myConnection = new OleDbConnection(myConnString);
+  OleDbCommand myCommand = new OleDbCommand(SQL, myConnection);
+  myConnection.Open();
+  OleDbDataAdapter MyAdapter = new OleDbDataAdapter(myCommand);
+  DataSet ds = new DataSet();
+  MyAdapter.Fill(ds);
+ 
+  MailsListBox.DataSource = ds;
+  MailsListBox.DataBind();
+ 
+  GridView1.DataSource = ds;
+  GridView1.DataBind();
+ 
+  myConnection.Close();
+ </code></pre>
+ 
+ <p>And so it looks:
+ <img src=""http://i40.tinypic.com/8vsrd1.jpg"" alt=""alt text""></p>
+ 
+ <p>As you see, the GridView shows the dataset just fine, and the ListBox fails it.
+ What happened? How can I fix it?</p>"
+2649360,318037,1,Problems with dotLess Stopping characters and hacks list?,"<p>Have any one run into trouble when running dotLess and having hacks on your CSS files? Been working on a project... just installed dotLess after one year of development to ease a little bit the job of creating new CSS files for some new functionality of the web site, and recently our old CSS is not working correctly.</p>
+ 
+ <hr>
+ 
+ <p>Viewing the resulting CSS files we realized that the dotLess compiler stopeed at some hacks like this one:</p>
+ 
+ <pre><code>html&gt;/**/body #itemTable .informationView fieldset textarea { min-height: 1.3em; height: 1.3em; }
+ </code></pre>
+ 
+ <p>So we were wondering if there is any list of stopping words or hacks for dotLess?</p>"
+2649420,16916,5,Can't install egenix-mx-base on Django production VPS,"<p>I have been following these <a href=""http://lethain.com/entry/2009/feb/13/the-django-and-ubuntu-intrepid-almanac/"">instructions</a> for setting up a Django production server with postgres, apache, nginx, and memcache. My problem is that I cannot get egenix-mx-base to install and without this I cannot get psycopg2 to work and therefore no database access :(. </p>
+ 
+ <p>I am attempting this on a VPS running a clean install of Ubuntu Hardy (8.04) and have followed all instructions on the site to a T.</p>
+ 
+ <p>The error message is as follows: </p>
+ 
+ <pre><code>$ easy_install egenix-mx-base
+ Searching for egenix-mx-base
+ Reading http://pypi.python.org/simple/egenix-mx-base/
+ Reading http://www.egenix.com/products/python/mxBase/
+ Reading http://www.lemburg.com/python/mxExtensions.html
+ Reading http://www.egenix.com/
+ Best match: egenix-mx-base 3.1.3
+ Downloading http://downloads.egenix.com/python/egenix-mx-base-3.1.3.tar.gz
+ Processing egenix-mx-base-3.1.3.tar.gz
+ Running egenix-mx-base-3.1.3/setup.py -q bdist_egg --dist-dir /tmp/easy_install-iF7qzl/egenix-mx-base-3.1.3/egg-dist-tmp-laxvcS
+ Warning: Can't read registry to find the necessary compiler setting
+ Make sure that Python modules _winreg, win32api or win32con are installed.
+ In file included from mx/TextTools/mxTextTools/mxte.c:42:
+ mx/TextTools/mxTextTools/mxte_impl.h: In function â€˜mxTextTools_TaggingEngineâ€™:
+ mx/TextTools/mxTextTools/mxte_impl.h:345: warning: pointer targets in initialization differ in signedness
+ mx/TextTools/mxTextTools/mxte_impl.h:364: warning: pointer targets in initialization differ in signedness
+ mx/URL/mxURL/mxURL.c: In function â€˜mxURL_SetFromStringâ€™:
+ mx/URL/mxURL/mxURL.c:676: warning: pointer targets in initialization differ in signedness
+ mx/UID/mxUID/mxUID.c: In function â€˜mxUID_Verifyâ€™:
+ mx/UID/mxUID/mxUID.c:333: warning: pointer targets in passing argument 1 of â€˜sscanfâ€™ differ in signedness
+ mx/UID/mxUID/mxUID.c: In function â€˜mxUID_Newâ€™:
+ mx/UID/mxUID/mxUID.c:462: warning: pointer targets in passing argument 1 of â€˜mxUID_CRC16â€™ differ in signedness
+ error: Setup script exited with error: build/bdist.linux-x86_64-py2.5_ucs4/dumb/egenix_mx_base-3.1.3-py2.5.egg-info: Is a directory
+ </code></pre>
+ 
+ <p>Thank you to anyone who takes the time to try to help me.</p>"
+2649450,6822,4,Syntax Error with John Resig's Micro Templating after changing template tags <# {% {{ etc,"<p>I'm having a bit of trouble with John Resig's Micro templating.</p>
+ 
+ <p>Can anyone help me with why it isn't working?</p>
+ 
+ <p>This is the template</p>
+ 
+ <pre><code>&lt;script type=""text/html"" id=""row_tmpl""&gt;
+ test content {%=id%} {%=name%}
+ &lt;/script&gt;
+ </code></pre>
+ 
+ <p>And the modified section of the engine</p>
+ 
+ <pre><code>str
+  .replace(/[\r\t\n]/g, "" "")
+  .split(""{%"").join(""\t"")
+  .replace(/((^|%&gt;)[^\t]*)'/g, ""$1\r"")
+  .replace(/\t=(.*?)%&gt;/g, ""',$1,'"")
+  .split(""\t"").join(""');"")
+  .split(""%}"").join(""p.push('"")
+  .split(""\r"").join(""\\'"")
+  + ""');}return p.join('');"");
+ </code></pre>
+ 
+ <p>and the javascript</p>
+ 
+ <pre><code>var dataObject = { ""id"": ""27"", ""name"": ""some more content"" };
+ var html = tmpl(""row_tmpl"", dataObject);
+ </code></pre>
+ 
+ <p>and the result, as you can see =id and =name seem to be in the wrong place? Apart from changing the template syntax blocks from &lt;% %> to {% %} I haven't changed anything.</p>
+ 
+ <p>This is from Firefox.</p>
+ 
+ <pre><code>Error: syntax error
+ Line: 30, Column: 89
+ Source Code:
+ var p=[],print=function(){p.push.apply(p,arguments);};with(obj){p.push(' test content ');=idp.push(' ');=namep.push(' ');}return p.join('');
+ </code></pre>"
+2649460,225033,7,How can I asynchronously monitor a file in Perl?,"<p>I am wondering if it is possible, and if so how, one could create a perl script that constantly monitors a file/db, and then call a subroutine to perform text processing if the file is changed. I'm pretty sure this would be possible using sockets, but this needs to be used for a webchat application on a site running on a shared host, and I'm not so sure sockets would be allowed on it. </p>
+ 
+ <p>The basic idea is: </p>
+ 
+ <ul>
+ <li>create a listener for a chat file/database</li>
+ <li>when the file is updated with a new message, call a subroutine</li>
+ <li>the called subroutine will send the new message back to the browser to be displayed</li>
+ </ul>
+ 
+ <p>Thanks in advance.</p>"
+2649500,318056,4,PHP splitting arrays into groups based on one field's value,"<p>I have an array containing arrays of names and other details, in alphabetical order. Each array includes the first letter associated with the name.</p>
+ 
+ <pre><code>Array
+ (
+  [0] =&gt; Array
+  (
+  [0] =&gt; a
+  [1] =&gt; Alanis Morissette
+  )
+ 
+  [1] =&gt; Array
+  (
+  [0] =&gt; a
+  [1] =&gt; Alesha Dixon
+  )
+  [2] =&gt; Array
+  (
+  [0] =&gt; a
+  [1] =&gt; Alexandra Burke
+  )
+ 
+  [3] =&gt; Array
+  (
+  [0] =&gt; b
+  [1] =&gt; Britney Spears
+  )
+ 
+  [4] =&gt; Array
+  (
+  [0] =&gt; b
+  [1] =&gt; Bryan Adams
+  )
+ )
+ </code></pre>
+ 
+ <p>I'd like to display them grouped by that first initial, eg:</p>
+ 
+ <pre>A
+ -
+ Alanis Morissette
+ Alesha Dixon
+ Alexandra Burke
+ 
+ B
+ -
+ Britney Spears
+ Bryan Adams
+ 
+ etc...</pre>
+ 
+ <p>Is this at all possible?</p>"
+2649530,313565,3,div stacking/layout with css or javascript,"<p>so i have 4 divs (i actually have many more but this will simplify the question). i want to display them in two columns. the 4 divs vary in height. the number of actual divs in the end will vary. 
+ so if i have this</p>
+ 
+ <pre><code>&lt;div id=""1"" style=""height: 200px"" class=""inline""&gt;some content here&lt;/div&gt;
+ &lt;div id=""2"" style=""height: 600px"" class=""inline""&gt;some content here&lt;/div&gt;
+ &lt;div id=""3"" style=""height: 300px"" class=""inline""&gt;some content here&lt;/div&gt;
+ &lt;div id=""4"" style=""height: 200px"" class=""inline""&gt;some content here&lt;/div&gt;
+ </code></pre>
+ 
+ <p>with styling thus</p>
+ 
+ <pre><code>.inline { display: inline-block; vertical-align: top; width: 48%;}
+ </code></pre>
+ 
+ <p>so #1 would go left and then #2 would shove up beside it to the right, great, but the #3 will not slide up the 400px to fit nicely below #1. (of course)... it goes on the left side but at 600px from the top clearing the bottom of #2. etc... </p>
+ 
+ <p>how would i get the divs to slide up into the empty spaces, is it possible with css? jquery maybe?
+ i know i could write column divs to mark it up, but since the number of divs constantly change and the heights vary according to content. It would be nice to just get rid of the space since we dont really care about the order.</p>
+ 
+ <p>any thoughts?</p>"
+2649600,268336,0,"Is it bad practice to handle the showing of the open file dialog, and other dialogs, from within a custom textbox control?","<p>I am making a custom textbox control and am thinking about adding keybindings in the constructor that execute commands to open and save files. I am also thinking about handling the find and replace dialog from within my textbox control.</p>
+ 
+ <p>Is there a reason I shouldn't do this?</p>
+ 
+ <p><strong>--Edit--</strong></p>
+ 
+ <p>I am planning on only using this control in my current application. One of the reasons I am thinking of doing this is to avoid binding to the textbox's Text property, since this binding seems like it would be just as inefficient as updating a string on the textbox's textchanged event.</p>"
+2649660,5696,0,Flicker/dead region issues maximizing an MFC window,"<p>I'm trying to make an MFC window (a <code>CDialog</code>) go fullscreen whenever the user attempts to maximize it. The window is being used as an OpenGL context. I'm attempting to do everything inside of the <code>CDialog::OnSize</code> callback. Here's the code that I'm using:</p>
+ 
+ <pre><code>void MyCDialogSubclass::OnSize(UINT action, int width, int height) {
+  CDialog::OnSize(action, width, height);
+ 
+  switch (action) {
+  case SIZE_MAXIMIZED:
+  if (GetStyle() &amp; WS_OVERLAPPEDWINDOW) {
+  MONITORINFO screen;
+  screen.cbSize = sizeof(screen);
+  if (GetMonitorInfo(MonitorFromWindow(GetSafeHwnd(), MONITOR_DEFAULTTOPRIMARY), &amp;screen)) {
+  ModifyStyle(WS_OVERLAPPEDWINDOW, 0, 0);
+  width = screen.rcMonitor.right - screen.rcMonitor.left;
+  height = screen.rcMonitor.bottom - screen.rcMonitor.top;
+  SetWindowPos(&amp;wndTop, screen.rcMonitor.left, screen.rcMonitor.top, width, height, SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+  }
+  }
+  break;
+  case SIZE_MINIMIZED:
+  case SIZE_RESTORED:
+  if (!(GetStyle() &amp; WS_OVERLAPPEDWINDOW)) {
+  ModifyStyle(0, WS_OVERLAPPEDWINDOW, 0);
+  SetWindowPos(NULL, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+  }
+  break;
+  }
+ 
+  if (wglMakeCurrent(my_hdc, my_hglrc))
+  my_opengl_reshape_call(width, height);
+  wglMakeCurrent(NULL, NULL);
+ }
+ </code></pre>
+ 
+ <p>If I comment out the <code>ModifyStyle()</code> calls, everything works fine, with the obvious proviso that the window style stays normal, so there's a standard window title bar across the top of the screen that I want to get rid of. If I keep the <code>ModifyStyle()</code> calls and comment out the <code>SetWindowPos()</code> calls, the title bar and everything else disappears, but the window has a black region along the top of the screen that is the exact height of the title barâ€”as though it is being reserved. If I don't comment out either of the pairs of calls, as shown in the code above, the screen flickers violently. I believe it's flickering back and forth between the black region being present and not being present, but it's difficult to tell. This flickering also appears to corrupt video memory, as I get persistent artifacts in window title bars (in different applications, no less) and, once, the login picture in the Start menu was replaced with one of my OpenGL textures.</p>
+ 
+ <p>The code that I'm using is adapted from the code that Stefan linked in an answer below, from <a href=""http://blogs.msdn.com/oldnewthing/archive/2010/04/12/9994016.aspx"" rel=""nofollow"">The Old New Thing</a>, which is working better than my original code. I'm assuming this problem isn't arising from my decision not to insert code to save the window placement (per The Old New Thing), because this happens before I ever try to restore the window.</p>"
+2649680,89593,18,"Named and optional parameters, and WCF","<p>so .Net 4 added named and optional parameters which are pretty sweet. I don't need to make as many 1 line overload methods.</p>
+ 
+ <p>Will that work over WCF?</p>"
+2649730,13442,8,How can you connect OpenGrok to a SVN repository?,"<p>I was able to install and use opengrok on WinXP using this blog entry</p>
+ 
+ <p><a href=""http://theflashesofinsight.wordpress.com/2009/05/11/install-opengrok-on-windows/"" rel=""nofollow"">http://theflashesofinsight.wordpress.com/2009/05/11/install-opengrok-on-windows/</a></p>
+ 
+ <p>I now want to index a subversion repository. I checked out a repository to the source folder and can search the files. However the links for history and annotate are not active.</p>
+ 
+ <p>I have svn installed and indexing the directory give no warnings or errors. (There was an error when I didnt have the SVN client installed)</p>
+ 
+ <p>Is there some configuration needed? I saw this link <a href=""http://blogs.oracle.com/trond/entry/using_subversion_with_opengrok"" rel=""nofollow"">http://blogs.oracle.com/trond/entry/using_subversion_with_opengrok</a> but it did not give me any clue.</p>
+ 
+ <p>I used</p>
+ 
+ <pre><code>java -Xmx1024m -jar opengrok.jar -W ""C:\\OpenGrok\\data\\configuration.xml"" -r on -P -S -v -s ""C:\\OpenGrok\\source"" -d ""C:\\OpenGrok\\data""
+ </code></pre>
+ 
+ <p>and after it</p>
+ 
+ <pre><code>java -Xmx1024m -jar opengrok.jar -R ""C:\\OpenGrok\\data\\configuration.xml"" -H
+ </code></pre>
+ 
+ <p>This is the resulting config:</p>
+ 
+ <pre><code>&lt;?xml version=""1.0"" encoding=""UTF-8""?&gt; 
+ &lt;java version=""1.6.0_20"" class=""java.beans.XMLDecoder""&gt; 
+  &lt;object class=""org.opensolaris.opengrok.configuration.Configuration""&gt; 
+  &lt;void property=""dataRoot""&gt; 
+  &lt;string&gt;C:\OpenGrok\data&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""projects""&gt; 
+  &lt;void method=""add""&gt; 
+  &lt;object class=""org.opensolaris.opengrok.configuration.Project""&gt; 
+  &lt;void property=""description""&gt; 
+  &lt;string&gt;Configuration&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""path""&gt; 
+  &lt;string&gt;/Configuration&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;/object&gt; 
+  &lt;/void&gt; 
+  &lt;void method=""add""&gt; 
+  &lt;object class=""org.opensolaris.opengrok.configuration.Project""&gt; 
+  &lt;void property=""description""&gt; 
+  &lt;string&gt;test&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""path""&gt; 
+  &lt;string&gt;/test&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;/object&gt; 
+  &lt;/void&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""remoteScmSupported""&gt; 
+  &lt;boolean&gt;true&lt;/boolean&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""repositories""&gt; 
+  &lt;void method=""add""&gt; 
+  &lt;object class=""org.opensolaris.opengrok.history.RepositoryInfo""&gt; 
+  &lt;void property=""datePattern""&gt; 
+  &lt;string&gt;yyyy-MM-dd&amp;apos;T&amp;apos;HH:mm:ss.SSS&amp;apos;Z&amp;apos;&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""directoryName""&gt; 
+  &lt;string&gt;C:\OpenGrok\source\Configuration&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""remote""&gt; 
+  &lt;boolean&gt;true&lt;/boolean&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""type""&gt; 
+  &lt;string&gt;Subversion&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""working""&gt; 
+  &lt;boolean&gt;true&lt;/boolean&gt; 
+  &lt;/void&gt; 
+  &lt;/object&gt; 
+  &lt;/void&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""sourceRoot""&gt; 
+  &lt;string&gt;C:\OpenGrok\source&lt;/string&gt; 
+  &lt;/void&gt; 
+  &lt;void property=""verbose""&gt; 
+  &lt;boolean&gt;true&lt;/boolean&gt; 
+  &lt;/void&gt; 
+  &lt;/object&gt; 
+ &lt;/java&gt; 
+ </code></pre>"
+2649800,454259,1,SQLServer 2008 Pivot,"<p>I need to show some information in a graph, the data is held in a SQL Server 2008 table. The graph is expecting 2 columns, one for QuestionNumber and the other for Score.</p>
+ 
+ <p>The table containing the data has column names that correspond to the question numbers ie A1, A2, A3, A4, B1, B2, B3, B4, C1, C2. Each question is given a score of 1 to 5. I need to show a graph where the X axis shows A1, A2, A3 etc and the Y axis shows the score.</p>
+ 
+ <p>I'm thinking I somehow need to rotate the data to achive this, but I'm not sure how. Maybe a different technique can achieve this rather than a pivot, so I'm open to any ideas.</p>"
+2649830,3609,5,Using XMLDecoder to cast Encoded XML to List<T>,"<p>I am writing an application that reads in a large number of basic user details in the following format; once read in it then allows the user to search for a user's details using their email:</p>
+ 
+ <pre><code>NAME ROLE EMAIL
+ ---------------------------------------------------
+ Joe Bloggs Manager jbm@company.com
+ John Smith Consultant jsc@company.com
+ Alan Wright Tester awt@company.com
+ ...
+ </code></pre>
+ 
+ <p>The problem I am suffering is that I need to store a large number of details of all people that have worked at the company. The file containing these details will be written on a yearly basis simply for reporting purposes, but the program will need to be able to access these details quickly.</p>
+ 
+ <p>The way I aim to access these files is to have a program that asks the user for the name of the unique email of the member of staff and for the program to then return the name and the role from that line of the file. I've played around with text files, but am struggling with how I would handle multiple columns of data when it comes to searching this large file. </p>
+ 
+ <p>What is the best format to store such data in? A text file? XML? The size doesn't bother me, but I'd like to be able to search it as quickly as possible. The file will need to contain a lot of entries, probably over the 10K mark over time.</p>
+ 
+ <hr>
+ 
+ <p><strong>EDIT:</strong> I've decided to go with the XML serialisation method. I've managed to get the code for Encoding working perfectly, but the Decoding code below does not work.</p>
+ 
+ <pre><code>XMLDecoder d = new XMLDecoder(
+  new BufferedInputStream(new FileInputStream(""data.xml"")));
+ List&lt;Employee&gt; list = (List&lt;Employee&gt;) d.readObject();
+ d.close();
+ for(Employee x : list) {
+  if(x.getEmail().equals(userInput)) {
+  // do stuff
+  }
+ }
+ </code></pre>
+ 
+ <p>When the program hits <code>List&lt;Employee&gt; list = (List&lt;Employee&gt;) d.readObject();</code> an exception is thrown claiming that ""Employee cannot be cast to java.util.List"". I've added a bounty to this and anyone that can help me solve this problem once and for all will get lots of lovely points.</p>
+ 
+ <p><strong>EDIT 2:</strong> I've looked a bit more into the problem and have come across <a href=""http://sanjaal.com/java/tag/java-beans-xmldecoder-examples/"" rel=""nofollow"">Serialization</a> as a potential answer. If anyone can look into this for me as I've no experience with Serialization or Deserialization I'd be very grateful. It can provide an Object with no problems whatsoever, but I really need to return it in the same format as it went in (List).</p>
+ 
+ <p><strong>EDIT 3:</strong> Ugh, this problem is really starting to drive me crazy and to be honest I'm starting to think that it's an unsolvable problem. If possible, could someone take a look at the code and help provide a solution for me?</p>"
+2649920,269143,4,MYSQL: Error: Cannot add or update a child row: a foreign key constraint fails,"<p>Using MySQL on Windows OS, and am getting an error upon attempting to create a foreign key between two tables: </p>
+ 
+ <pre><code>CREATE TABLE tf_traffic_stats ( 
+ domain_name char(100) NOT NULL,
+ session_count int(11) NULL,
+ search_count int(11) NULL,
+ click_count int(11) NULL,
+ revenue float NULL,
+ rpm float NULL,
+ cpc float NULL,
+ traffic_date date NOT NULL DEFAULT '0000-00-00',
+ PRIMARY KEY(domain_name,traffic_date))
+ </code></pre>
+ 
+ <p>and</p>
+ 
+ <pre><code>CREATE TABLE td_domain_name ( 
+ domain_id int(10) UNSIGNED AUTO_INCREMENT NOT NULL,
+ domain_name char(100) NOT NULL,
+ update_date date NOT NULL,
+ PRIMARY KEY(domain_id))
+ </code></pre>
+ 
+ <p>The following statement gives me the error present in the subject line (cannot add or update a child row: a foreign key constraint fails): </p>
+ 
+ <pre><code>ALTER TABLE td_domain_name
+ ADD CONSTRAINT FK_domain_name
+ FOREIGN KEY(domain_name)
+ REFERENCES tf_traffic_stats(domain_name)
+ ON DELETE RESTRICT 
+  ON UPDATE RESTRICT
+ </code></pre>
+ 
+ <p>Can someone point me in the right direction of what may be causing the error. I also have a foreign key referencing td_domain_name.domain_id, but I don't <i>think</i> this should be interfering...</p>
+ 
+ <p>Also, as a workaround (<em>failed</em>) to this issue (which I'm sure can be easily resolved), I've tried simply performing a </p>
+ 
+ <pre><code>td_domain_name left outer join tf_traffic_stats on td_domain_name.domain_name=tf_traffic_stats.domain_name
+ </code></pre>
+ 
+ <p>; however, the number of records do not match up as they should (i.e., left outer join not successful). </p>
+ 
+ <p>Appreciate it!</p>"
+2650000,84478,9,Is there a GUI framework that uses HTML and CSS to build GUIs?,"<p>I mean, other than a browser, of course -- I'm talking about building native applications with HTML and CSS -- not web applications, but <em>real</em> native GUIs.</p>
+ 
+ <p>I wonder if such a thing exists?</p>
+ 
+ <p>And what do you think of such a beast? What would the pros/cons of such a system be?</p>"
+2650040,176645,1,WCF: SecurityNegotiationException when using client,"<p>So I've been trying to set up certificate authentication for my clients and services. The eventual goal is to partition data based on the certificate a client connects with (i.e. the certificate becomes their credentials in to the greater system and their data is partitioned based on these credentials).</p>
+ 
+ <p>I have been able to set it up successfully on both the client and the server side. I have created a certificate and a private key, installed them on my computer, and set up my server such that 1) it has a certificate-based service credential and 2) if a client connects <em>without</em> providing a certificate-based credential an exception is thrown.</p>
+ 
+ <p>What I then did was create a simple client and add a certificate credential to the configuration and try to call a simple operation on the service. </p>
+ 
+ <p>It looks like the client connects OK, and it looks like the certificate is accepted by the server, but I do get this:</p>
+ 
+ <p><strong>SecurityNegotiationException:</strong></p>
+ 
+ <p><em>""The caller was not authenticated by the service.""</em></p>
+ 
+ <p>That seems rather ambiguous to me. Note that I am using wsHttpBinding, which supposedly defaults to Windows auth for transport security...but all of these processes are being run as my user account as I'm running in my debug environment.</p>
+ 
+ <p>Here is my server configuration:</p>
+ 
+ <pre><code>&lt;system.serviceModel&gt;
+  &lt;bindings&gt;
+  &lt;wsHttpBinding&gt;
+  &lt;binding name=""MyServiceBinding""&gt;
+  &lt;security mode=""Message""&gt;
+  &lt;transport clientCredentialType=""None""/&gt;
+  &lt;message clientCredentialType=""Certificate""/&gt;
+  &lt;/security&gt;
+  &lt;/binding&gt;
+  &lt;/wsHttpBinding&gt;
+  &lt;/bindings&gt;
+  &lt;services&gt;
+  &lt;service behaviorConfiguration=""MyServiceBehavior"" name=""MyService""&gt;
+  &lt;endpoint binding=""wsHttpBinding"" bindingConfiguration=""MyServiceBinding"" contract=""IMyContract""/&gt;
+  &lt;endpoint binding=""mexHttpBinding"" address=""mex"" contract=""IMetadataExchange""&gt;
+  &lt;identity&gt;
+  &lt;dns value=""localhost""/&gt;
+  &lt;/identity&gt;
+  &lt;/endpoint&gt;
+  &lt;/service&gt;
+  &lt;/services&gt;
+  &lt;behaviors&gt;
+  &lt;serviceBehaviors&gt;
+  &lt;behavior name=""MyServiceBehavior""&gt;
+  &lt;serviceMetadata httpGetEnabled=""true"" policyVersion=""Policy15"" /&gt;
+  &lt;serviceDebug includeExceptionDetailInFaults=""false"" /&gt;
+  &lt;serviceCredentials&gt;
+  &lt;serviceCertificate storeLocation=""CurrentUser"" storeName=""My"" x509FindType=""FindBySubjectName"" findValue=""tmp123""/&gt;
+  &lt;/serviceCredentials&gt;
+  &lt;/behavior&gt;
+  &lt;/serviceBehaviors&gt;
+  &lt;/behaviors&gt;
+  &lt;serviceHostingEnvironment multipleSiteBindingsEnabled=""true"" /&gt;
+ &lt;/system.serviceModel&gt;
+ </code></pre>
+ 
+ <p>Here is my client config -- note that I'm using the same cert for the client that I use on the service:</p>
+ 
+ <pre><code>&lt;system.serviceModel&gt;
+  &lt;bindings&gt;
+  &lt;wsHttpBinding&gt;
+  &lt;binding name=""WSHttpBinding_IMyService"" closeTimeout=""00:01:00"" openTimeout=""00:01:00"" receiveTimeout=""00:10:00"" sendTimeout=""00:01:00"" bypassProxyOnLocal=""false"" transactionFlow=""false"" hostNameComparisonMode=""StrongWildcard"" maxBufferPoolSize=""524288"" maxReceivedMessageSize=""65536"" messageEncoding=""Text"" textEncoding=""utf-8"" useDefaultWebProxy=""true"" allowCookies=""false""&gt;
+  &lt;readerQuotas maxDepth=""32"" maxStringContentLength=""8192"" maxArrayLength=""16384"" maxBytesPerRead=""4096"" maxNameTableCharCount=""16384""/&gt;
+  &lt;reliableSession ordered=""true"" inactivityTimeout=""00:10:00"" enabled=""false""/&gt;
+  &lt;security mode=""Message""&gt;
+  &lt;!--&lt;transport clientCredentialType=""Windows"" proxyCredentialType=""None"" realm=""""/&gt;--&gt;
+  &lt;message clientCredentialType=""Certificate"" negotiateServiceCredential=""true"" algorithmSuite=""Default""/&gt;
+  &lt;/security&gt;
+  &lt;/binding&gt;
+  &lt;/wsHttpBinding&gt;
+  &lt;/bindings&gt;
+  &lt;client&gt;
+  &lt;endpoint address=""http://localhost:50120/UserServices.svc"" binding=""wsHttpBinding"" bindingConfiguration=""WSHttpBinding_IMyService"" behaviorConfiguration=""IMyService_Behavior"" contract=""UserServices.IUserServices"" name=""WSHttpBinding_IMyService""&gt;
+  &lt;identity&gt;
+  &lt;certificate encodedValue=""Some RSA stuff""/&gt;
+  &lt;/identity&gt;
+  &lt;/endpoint&gt;
+  &lt;/client&gt;
+  &lt;behaviors&gt;
+  &lt;endpointBehaviors&gt;
+  &lt;behavior name=""IMyService_Behavior""&gt;
+  &lt;clientCredentials&gt;
+  &lt;clientCertificate storeLocation=""CurrentUser"" storeName=""My"" x509FindType=""FindBySubjectName"" findValue=""tmp123""/&gt;
+  &lt;/clientCredentials&gt;
+  &lt;/behavior&gt;
+  &lt;/endpointBehaviors&gt;
+  &lt;/behaviors&gt;
+ &lt;/system.serviceModel&gt;
+ </code></pre>
+ 
+ <p>Can anyone please help provide some insight as to what might be up here?</p>
+ 
+ <p>Thanks,</p>"
+2650080,30479,196,How to get C# Enum description from value?,"<blockquote>
+  <p><strong>Possible Duplicate:</strong><br>
+  <a href=""http://stackoverflow.com/questions/1799370/getting-attributes-of-enums-value"">Getting attributes of Enumâ€™s value</a> </p>
+ </blockquote>
+ 
+ 
+ 
+ <p>I have an enum with Description attributes like this:</p>
+ 
+ <pre><code>public enum MyEnum
+ {
+  Name1 = 1,
+  [Description(""Here is another"")]
+  HereIsAnother = 2,
+  [Description(""Last one"")]
+  LastOne = 3
+ }
+ </code></pre>
+ 
+ <p>I found this bit of code for retrieving the description based on an Enum</p>
+ 
+ <pre><code>public static string GetEnumDescription(Enum value)
+ {
+  FieldInfo fi = value.GetType().GetField(value.ToString());
+ 
+  DescriptionAttribute[] attributes =
+  (DescriptionAttribute[])fi.GetCustomAttributes(
+  typeof(DescriptionAttribute),
+  false);
+ 
+  if (attributes != null &amp;&amp;
+  attributes.Length &gt; 0)
+  return attributes[0].Description;
+  else
+  return value.ToString();
+ }
+ </code></pre>
+ 
+ <p>This allows me to write code like:</p>
+ 
+ <pre><code>var myEnumDescriptions = from MyEnum n in Enum.GetValues(typeof(MyEnum))
+  select new { ID = (int)n, Name = Enumerations.GetEnumDescription(n) };
+ </code></pre>
+ 
+ <p>What I want to do is if I know the enum value (e.g. 1) - how can I retrieve the description? In other words, how can I convert an integer into an ""Enum value"" to pass to my GetDescription method?</p>"
+2650110,41108,3,Using hash to check if page with $_POST values was refreshed,"<p>When posting a form to the same PHP page, what is the correct method to find if the page was accidentally refreshed instead of submitted again?</p>
+ 
+ <p>Here's what I'm using right now:</p>
+ 
+ <pre><code>$tmp = implode('',$_POST);
+ $myHash = md5($tmp);
+ 
+ if(isset($_SESSION[""myHash""]) &amp;&amp; $_SESSION[""myHash""] == $myHash)
+ {
+  header(""Location: index.php""); // page refreshed, send user somewhere else
+  die();
+ }
+ else
+ {
+  $_SESSION[""myHash""] = $myHash;
+ }
+ 
+ // continue processing...
+ </code></pre>
+ 
+ <p>Is there anything wrong with this solution?</p>
+ 
+ <p><strong>UPDATE:</strong> An example for this scenario would be inserting a row into a registration table. You would only want this operation executing once.</p>"
+2650140,51167,1,How do I process the configure file when cross-compiling with mingw?,"<p>I have a small open source program that builds with an autoconf configure script. </p>
+ 
+ <p>I ran configure I tried to compile with:</p>
+ 
+ <pre><code>make CC=""/opt/local/bin/i386-mingw32-g++""
+ </code></pre>
+ 
+ <p>That didn't work because the configure script found include files that were not available to the mingw system.</p>
+ 
+ <p>So then I tried:</p>
+ 
+ <pre><code>./configure CC=""/opt/local/bin/i386-mingw32-g++""
+ </code></pre>
+ 
+ <p>Is that the right way to do it?</p>"
+2650150,309827,3,Getting the first result from a LINQ query - why does ElementAt<T>(0) fails when First<T>() succeeds?,"<p>I have a method <strong>AddStudent()</strong> which looks for a student with the same name and returns an existing student from the database if there is a student with the same name, otherwise it creates a new student and adds it to the database.</p>
+ 
+ <p>I'm curious why <code>se = students.First&lt;StudentEntity&gt;();</code> succeeds when <code>se = students.ElementAt&lt;StudentEntity&gt;(0);</code> fails when I try to get the first result from the LINQ query. Aren't the two methods the same?</p>
+ 
+ <p>The full code for the method is shown below.</p>
+ 
+ <pre><code>public Student AddStudent(string name)
+ {
+  using (SchoolEntities db = new SchoolEntities())
+  {
+  // find student with same name via LINQ
+  var students = from s in db.StudentEntitySet
+  where s.name == name
+  select s;
+ 
+  StudentEntity se = default(StudentEntity);
+ 
+  // if student with the same name is already present, return 
+  // that student
+  if (students.Count&lt;StudentEntity&gt;() &gt; 0)
+  {
+  // if i use ElementAt, if fails with a ""LINQ to Entities does not
+  // recognize the method 'StudentEntity ElementAt[StudentEntity]
+  // (System.Linq.IQueryable`1[StudentEntity], Int32)' method, 
+  // and this method cannot be translated into a store expression."", 
+  // but not when I use First. Why?
+ 
+  // se = students.ElementAt&lt;StudentEntity&gt;(0);
+  se = students.First&lt;StudentEntity&gt;();
+  }
+  else
+  {
+  // passing 0 for first parameter (id) since it's represented by 
+  // a BigInt IDENTITY field in the database so any value
+  // doesn't matter.
+  se = StudentEntity.CreateStudentEntity(0, name);
+  db.AddToStudentEntitySet(se);
+  db.SaveChanges();
+  }
+ 
+  // create a Student object from the Entity object
+  return new Student(se);
+  }
+ }
+ </code></pre>
+ 
+ <p>Thanks!</p>"
+2650180,212211,1,Java is there any IDE/Tool that can pull SQL statements out in to a file?,<p>Hi is there any tool available in Java world that will parse/read a source file and pull SQL statements out in to a text file. This is a complex task given that you can write SQL statements in different fashion within the source (ex: using <code>+</code> sign or using <code>.append()</code>) or even conditional building of SQL.</p>
+2650190,283311,21,Objective-C and use of SEL/IMP,"<p>Another question of mine about <a href=""http://stackoverflow.com/questions/2534990/objective-c-optimization"">optimizing Objective C programs</a> inspired the following: does anyone have a short example using SEL and IMP when theMethod has two (or more) integers for input?</p>"
+2650220,204193,12,Python Fabric: How to handle arbitrary remote shell prompt for input?,"<p>This is related to this <a href=""http://stackoverflow.com/questions/2246256/python-fabric-how-to-answer-to-keyboard-input"">question</a> here, but with a slight twist: instead of just passing 'yes' or 'no', I need Fabric to pass an arbitrary string to the remote shell.</p>
+ 
+ <p>For instance, if the remote shell prompts for 'what is your name?' then I need to feed it 'first,last'.</p>
+ 
+ <p>Clarification: I know I said arbitrary input, but I was really <a href=""http://twitter.com/jaysern/status/12308758391"">trying to use it for the SSH key passwd prompt when I try to do a git pull</a>.</p>
+ 
+ <p>Update #1: Got a response from Jeff Forcier @bitprophet</p>
+ 
+ <ul>
+ <li><p><a href=""http://twitter.com/bitprophet/status/12309847173"">thatâ€™s like the #1 wart right now :( Either tunnelling to send a key agent out-of-band, or remote prompting, is needed.</a></p></li>
+ <li><p><a href=""http://twitter.com/bitprophet/status/12310997973"">I meant adding support <em>for</em> those things in Fabric, is what we need to do to get network-borne git ops working</a></p></li>
+ <li><p><a href=""http://twitter.com/bitprophet/status/12311051050"">Adding an easy way to kick off an OOB ssh agent-friendly tunnel is going to be easier/faster, most likely. Soon probably</a></p></li>
+ </ul>"
+2650250,318079,2,How to launch new Firefox window with multiple tabs using Python,"<p>I want to create a MSWindows Python program that would launch a new Firefox window with multiple tabs each time it is run. For example if I want to search ""hello"", a new window pops out (even if a Firefox window is already open) and then launches a Google and Bing tabs searching for ""hello"". If I change the keyword to ""world"", a new browser pops out again with Google and Bing tabs searching for ""world"".</p>
+ 
+ <p>I've looked at the webbrowser module but couldn't get it to:
+ 1. Launch a new browser when a browser is already open: e.g. webbrowser.open('http://www.google.com',new=1) will instead open a new tab
+ 2. Launch multiple tabs simultaneously in the same window</p>
+ 
+ <p>Appreciate the help.</p>
+ 
+ <p>Thanks.</p>"
+2650290,31379,1,How can one create a org.eclipse.jface.preference.BooleanFieldEditor with a multi-line label?,"<p>The ff. does not work. ""Second line"" is rendered on the same line as ""First line"". What's more is that there is no space between the two.</p>
+ 
+ <pre><code>new BooleanFieldEditor(""Name"", ""First line\nSecond line"", getFieldEditorParent());
+ </code></pre>"
+2650310,103264,2,Application self aware of external database record modifications,"<p>How do you make your application aware that a database record was changed or created by an external application rather than the application itself?</p>
+ 
+ <p>Do you add a special check sum to the database record or what do you do to stop external changes to the database? (in case it was hacked and the hacker decides to add a new record or change an existing database record)</p>"
+2650320,305629,0,Preload IFrame or load with Ajax,"<p>Hi all im building a web user interface.
+ In this interface i use popup divs to capture user input and other tasks.
+ On on of my popups i need to post a form so that i can handle uploaded files.</p>
+ 
+ <p>Id like to do this in an iframe so that it dosent effect the main page form.</p>
+ 
+ <p>Id like to know if there are any drawbacks to this method and if i should load the iframe into the page at startup or output the iframe via an ajax routine. </p>"
+2650340,219205,3,How to keep parameters on URL when write a custom 404 error page?,"<p>I set a custom 404 error page in IIS6. In code-behind i want to get parameters from incorrect URL, How do i do?</p>"
+2650370,318167,0,plupload with webpy,"<p>I would like to upload a file with plupload with the HTML5 runtime.</p>
+ 
+ <p>This is my html/js code :</p>
+ 
+ <pre><code>jQuery(function(){
+  jQuery(""#uploader"").pluploadQueue({
+  // General settings
+  runtimes : 'html5',
+  name : 'file',
+  url : 'http://server.name/addContent',
+  max_file_size : '${maxSize}$_(""GB"")',
+  });
+ 
+ 
+  jQuery('#form_upload_file').submit(function(e) {
+  var uploader = jQuery('#uploader').pluploadQueue();
+  // Validate number of uploaded files
+  if (uploader.total.uploaded == 0) {
+  // Files in queue upload them first
+  if (uploader.files.length &gt; 0) {
+  // When all files are uploaded submit form
+  uploader.bind('UploadProgress', function() {
+  if (uploader.total.uploaded == uploader.files.length)
+  jQuery('#form_upload_file').submit();
+  });
+  uploader.start();
+  } else
+  alert('You must at least upload one file.');
+ 
+  e.preventDefault();
+  }
+  });
+ 
+ 
+ });
+ 
+ &lt;form id=""form_upload_file"" action=""#"" method=""POST""&gt;
+  &lt;div id=""uploader""&gt;&lt;/div&gt;
+  &lt;input type=""hidden"" name=""token"" value=""token"" /&gt;
+  &lt;input type=""hidden"" name=""idUser"" value=""$idUser"" /&gt;
+  &lt;/form&gt;
+ </code></pre>
+ 
+ <p>So, when i click in the button to upload(the submit() method is not called), it does an OPTIONS HTTP request to my server 
+ so i don't know what i must do to save the file?</p>
+ 
+ <p>this is my webpy code :</p>
+ 
+ <pre><code>def OPTIONS(self):
+  web.header('Content-type', 'text/plain: charset=utf-8')
+  web.header('Cache-Control', 'no-store, no-cache, must-revalidate')
+  web.header('Cache-Control', 'post-check=0, pre-check=0', False)
+  web.header('Pragma', 'no-cache')
+ 
+ 
+  def POST(self):
+  input = web.input(_unicode=False, file={})#on rÃ©cupÃ¨re les input
+  self.copy(input.file.file)
+  etc.
+ </code></pre>
+ 
+ <p>Any idea what is wrong?</p>"
+2650380,206328,15,C++ typeof operator,"<p>Is C++ <code>typeof</code> operator standard? de facto standard?
+ which compilers do not provided it (besides Microsoft C++)?</p>"
+2650420,3086,0,jQuery Ajax posting Arrays instead of simple data,"<p>Hey, I've tried to update jQuery to its latest version on a system I'm working and I'm having this issue:</p>
+ 
+ <p>I have a file that posts data to a .php:</p>
+ 
+ <pre><code>$.post(
+ 
+ 'ajax_Save.php',
+ {
+ id: [$('#service_id').val()],
+ number: [$('#number').val()]
+ },
+  function(data){
+ ...
+ });
+ </code></pre>
+ 
+ <p>On ajax_Save.php var_dump($_POST) gives:</p>
+ 
+ <pre><code>array(26) { [""id""]=&gt; array(1) { [0]=&gt; string(5) ""18204"" } [""number""]=&gt; array(1) { [0]=&gt; string(5) ""18250"" }...
+ </code></pre>
+ 
+ <p>With jQuery version 1.2.2 the result is:</p>
+ 
+ <pre><code>array(26) { [""id""]=&gt; string(5) ""18204"" [""order_number""]=&gt; string(5) ""18250""
+ </code></pre>
+ 
+ <p>Which is OK.</p>
+ 
+ <p>Any clues? Thx</p>"
+2650430,194246,5,Defining application layers in Domain-Driven-Design,"<p>I have a question about DDD. I'm building a application to learn DDD and I have a question about layering. I have an application that works like this:</p>
+ 
+ <p>UI layer calls =>
+ Application Layer ->
+ Domain Layer ->
+ Database</p>
+ 
+ <p>Here is a small example of how the code looks:</p>
+ 
+ <pre><code>//****************UI LAYER************************
+ //Uses Ioc to get the service from the factory.
+ //This factory would be in the MyApp.Infrastructure.dll
+ IImplementationFactory factory = new ImplementationFactory();
+ 
+ //Interface and implementation for Shopping Cart service would be in MyApp.ApplicationLayer.dll
+  IShoppingCartService service = factory.GetImplementationFactory&lt;IShoppingCartService&gt;();
+ 
+  //This is the UI layer,
+  //Calling into Application Layer
+  //to get the shopping cart for a user.
+ 
+  //Interface for IShoppingCart would be in MyApp.ApplicationLayer.dll
+  //and implementation for IShoppingCart would be in MyApp.Model.
+  IShoppingCart shoppingCart = service.GetShoppingCartByUserName(userName);
+ 
+  //Show shopping cart information.
+  //For example, items bought, price, taxes..etc
+  ...
+ 
+  //Pressed Purchase button, so even for when
+  //button is pressed.
+  //Uses Ioc to get the service from the factory again.
+  IImplementationFactory factory = new ImplementationFactory();
+  IShoppingCartService service = factory.GetImplementationFactory&lt;IShoppingCartService&gt;();
+  service.Purchase(shoppingCart);
+ 
+ 
+  //**********************Application Layer**********************
+  public class ShoppingCartService : IShoppingCartService
+  {
+  public IShoppingCart GetShoppingCartByUserName(string userName)
+  {
+  //Uses Ioc to get the service from the factory.
+  //This factory would be in the MyApp.Infrastructure.dll
+  IImplementationFactory factory = new ImplementationFactory();
+ 
+  //Interface for repository would be in MyApp.Infrastructure.dll
+  //but implementation would by in MyApp.Model.dll
+  IShoppingCartRepository repository = factory.GetImplementationFactory&lt;IShoppingCartRepository&gt;();
+ 
+  IShoppingCart shoppingCart = repository.GetShoppingCartByUserName(username);
+  //Do shopping cart logic like calculating taxes and stuff
+  //I would put these in services but not sure?
+  ...
+ 
+  return shoppingCart;
+  }
+ 
+  public void Purchase(IShoppingCart shoppingCart)
+  {
+  //Do Purchase logic and calling out to repository
+  ...
+  }
+  }
+ </code></pre>
+ 
+ <p>I've seem to put most of my business rules in services rather than the models and I'm not sure if this is correct?
+ Also, i'm not completely sure if I have the laying correct? Do I have the right pieces in the correct place? Also should my models leave my domain model? In general I'm I doing this correct according DDD?</p>
+ 
+ <p>Thanks!</p>"
+2650480,149080,0,How do you access the one iFrame on a page when you don't know the name or ID?,"<p>Given an html page with:</p>
+ 
+ <pre><code>&lt;iframe frameborder=""0"" allowtransparency=""true"" tabindex=""0"" src="""" 
+  title=""Rich text editor, editor_kama, press ALT 0 for help."" 
+  style=""width: 100%; height: 100%;""&gt;
+  &lt;html&gt;
+  &lt;body&gt;&lt;p&gt;replace me&lt;/p&gt;&lt;/body&gt;
+  &lt;/html&gt;
+ &lt;/iframe&gt;
+ </code></pre>
+ 
+ <p>How can I access the iFrame assuming I can't give the iFrame a name or ID since it's made dynamically and also assuming that there is always only one iFrame on the page?</p>
+ 
+ <p>I'd like to be able to replace everything in the body tag within the iFrame with ""found me"" or something like that.</p>
+ 
+ <p>Any ideas?</p>"
+2650530,34537,1,Best' way to pull data relative to a div?,"<p><a href=""http://stackoverflow.com/questions/2649283/avoid-textarea-rows-cols-error/2649297#2649297"">This answer</a> suggested i should put my data in JS instead of a textarea.</p>
+ 
+ <p>Thinking about it i could have scripts and do something like myarray[i]=""data"" where i is the index of my for loop. However when i click a div how do i find out what i is? I have used <code>var data = $(this).parent('.parent').find('.valuestr').eq(0).val();</code> which is extremely simple. Should i use a script or should i continue to do it with a textarea? if i should use a script 1) Whats the easiest way to find i and 2) Is it bad pratice to have dozens or hundreds of <code>&lt;script&gt;</code> in my html? or i can go through the loop twice but i still dont know the easiest way to find i. I would have to store it somewhere or go through multiple tags and count them.</p>"
+2650580,316101,-4,why pointer is more efficient than array in use,<p>why pointer is more efficient or superior than declaring array?</p>
+2650610,195699,0,Ordering view by highest group count question - Ruby on Rails,"<p>I've read the couple of questions about this on stack overflow but can't seem to find the answer. I am trying to display the tags in my blog by the ones with the highest count in the tags table.</p>
+ 
+ <p>Thanks to KandadaBoggu for helping me get the tags feature of the blog I am designing working. Here is the basics and my question. </p>
+ 
+ <p>Tag belongs_to :post and Post has_many :tags. The tags table is simple really, consisting of the normal scaffolded fields plus post_id and tag_name (I actually called the column 'tag_name' instead of just 'name'). </p>
+ 
+ <p>in my /views/posts/index.html/erb file I correctly am displaying the tags by group and the amount of times they are being used (appearing in the tags table). I just want to know how to order them by the highest count. Here is the code, and I currently have it set to updated_at:</p>
+ 
+ <p>PostsController</p>
+ 
+ <pre><code> def index
+  @tag_counts = Tag.count(:group =&gt; :tag_name, :order =&gt; 'updated_at DESC', :limit =&gt; 10)
+  conditions, joins = {}, nil
+  unless(params[:tag_name] || """").empty?
+  conditions = [""tags.tag_name = ? "", params[:tag_name]]
+  joins = :tags
+  end
+  @posts=Post.all(:joins =&gt; joins, :conditions=&gt; conditions, :order =&gt; 'created_at DESC').paginate :page =&gt; params[:page], :per_page =&gt; 5
+ 
+  respond_to do |format|
+  format.html # index.html.erb
+  format.xml { render :xml =&gt; @posts }
+  format.json { render :json =&gt; @posts }
+  format.atom
+  end
+  end
+ </code></pre>"
+2650660,184046,6,Printing the structure of an array without its contents?,"<p>I was wondering if there is a way to print just the structure of the array without the contents. I generally use print_r to examine the structure but because my array contains some binary data, I'd rather not use this.</p>"
+2650680,263485,0,PyQt error: QSqlDatabasePrivate::database: unable to open database,"<p>What is the cause of following error:
+ QSqlDatabasePrivate::database: unable to open database: unable to open database
+ file Error opening database?</p>
+ 
+ <p>Code is 100% correct, this message appeared when I have reinstalled Windows, Python and PyQt.</p>
+ 
+ <p>EDIT: I have ""read-only"" flag in folder with .db file properties. It stays gray (half-checked) when I unset it and open folder properties again. I have unset ""use simple sharing"" flag in folder properties, I have administrator rights, there is no viruses on my computer as I can see. This nasty problem doesn't have a solution on Super User too. How to set proper permissions for sqlite for this folder and file?</p>"
+2650720,172131,0,Threading questions,"<ol>
+ <li><p>If I spawn a secondary thread and the threaded method calls other methods, are those methods run in the secondary thread or the main thread?</p></li>
+ <li><p>Is there a way to determine on which thread a specified piece of code is being run?</p></li>
+ </ol>"
+2650750,31671,2,What sort of exceptions should I be throwing from inside Kohana 3?,"<p>I've seen the code examples on <a href=""http://techportal.inviqa.com/2010/02/22/scaling-web-applications-with-hmvc/"" rel=""nofollow"">this article</a>, but throwing <code>Controller_Exception_404</code> produces an error.</p>
+ 
+ <p>I've just been throwing plain exceptions. I remember in Kohana 2.3 there were different ones you could throw, depending on the situation.</p>
+ 
+ <p>Does anyone have a list of what exceptions should be thrown when?</p>"
+2650780,141172,2,VS2010 Extension like Smart Paster?,"<p>Alex Papadimoulis' <a href=""http://weblogs.asp.net/alex_papadimoulis/archive/2004/05/25/Smart-Paster-1.1-Add-In---StringBuilder-and-Better-C_2300_-Handling.aspx"" rel=""nofollow"">Smart Paster</a> is a great little tool that can paste text in programmer-friendly ways (e.g. as a StringBuilder, as a language-specific string literal, etc.). However, it doesn't seem to be available for VS2010.</p>
+ 
+ <p>Anyone know of a similar extension or of plans to port Smart Paster?</p>"
+2650800,91422,0,Use one single DLL library to import other libraries at runtime,"<p>I am writing a Win32 DLL library that can be redistributed. I am using different versions of the windows API because I want to support Windows 7 functions, but still have support for Windows 2000 (with some function disabled). What I have currently is MyLib2000.dll, MyLibXP.dll, and MyLibVista.dll, and my application chooses which library to load at runtime. I want a way to have a single DLL (MyLib.dll) that stores the other three in itself and when it's being loaded, it extracts the correct DLL out of itself and loads it.</p>
+ 
+ <p>I know this is not the best way to do this, so suggestions on another method of doing this is welcome.</p>"
+2650810,238644,3,Strcpy() corrupts the copied string in Solaris but not Linux,"<p>I'm writing a C code for a class. This class requires that our code compile and run on the school server, which is a sparc solaris machine. I'm running Linux x64.</p>
+ 
+ <p>I have this line to parse (THIS IS NOT ACTUAL CODE BUT IS INPUT TO MY PROGRAM):</p>
+ 
+ <pre><code>while ( cond1 ){ 
+ </code></pre>
+ 
+ <p>I need to capture the ""while"" and the ""cond1"" into separate strings. I've been using <code>strtok()</code> to do this. In Linux, the following lines:</p>
+ 
+ <pre><code>char *cond = NULL;
+ cond = (char *)malloc(sizeof(char));
+ memset(cond, 0, sizeof(char));
+ strcpy(cond, strtok(NULL, "": \t\(){"")); //already got the ""while"" out of the line
+ </code></pre>
+ 
+ <p>will correctly capture the string ""cond1"".Running this on the solaris machine, however, gives me the string ""cone1"". </p>
+ 
+ <p>Note that in plenty of other cases within my program, strings are being copied correctly. (For instance, the ""while"") was captured correctly.</p>
+ 
+ <p>Does anyone know what is going on here?</p>"
+2650840,200554,1,JBOSS Monitoring tool on UNIX,"<p>I have a web application deployed on a jboss server running on a unix machine.
+ I want to be able to monitor threads, CPU times ,requests, etc. , for gauging application performance on the server.
+ What might be the best way to do this?</p>"
+2650870,318211,0,DNS resolve without depending on router for asterisk system,<p>Basically I have a Debian box running asterisk assigned an IP via DHCP with host-name XXX. My windows browser can resolve the host-name but if I use host-name in X-Lite or my SPA922 phone it fails to resolve. Is there any way of getting this to work without depending on the router or assigning a static IP (request is to make it portable). I was thinking zero-conf but am unsure (box has limited HDD too). Any help is most appreciated.</p>
+2650920,118584,1,Select some records,"<p>I have an <code>IList&lt;MyList&gt;</code>. I'd like with LINQ keep the same list (same number of record) but I'd like reduce or/and rename some record. At the end I'd like to have <code>IList&lt;MyNewList&gt;</code>.</p>
+ 
+ <p><strong>Update (Marc Gravell request)</strong>
+ We have tools to generate interface/object from Oracle stored procedure. My problem is, for some stored procedure, a lot of field are created, normal it's returned by the database (and change the database is not an option). Then the tools generated ""Field1,Field2,Field3,Field4,..."" but I'd like create a new list with only ""Field2,Field4"". this new list will be binded with a GridView.</p>"
+2650930,275845,0,Blackberry JDE v5.0,<p>Blackberry JDE v5.0 was released on 03/31/2010. IS that a beta version?</p>
+2650990,97651,3,Record/Playback with AudioQueue on iPhone,"<p>I am currently using Audio Queues on the iPhone to record and playback audio.</p>
+ 
+ <p>What I would like to be able to do is to record some audio, allow the user to pause the record queue, and to seek back and forward through the audio to select a position from where they can start recording from again.</p>
+ 
+ <p>I have got over the seeking issue by making the playback AudioQueueBuffer sizes small enough so that the play audio queue callback happens at a rate that allows the user to use a slider control to hear the audio as they adjust the slider back and forth.</p>
+ 
+ <p>I think I can achieve the recording at a new position by setting the inStartingPacket parameter of the AudioFileWritePackets function that I call from the Audio Recording Queue callback.</p>
+ 
+ <p>The trouble is this only inserts audio over the previously recorded audio. The file length obviously doesn't change so if the user were to go backwards and record less audio than before, the old audio still remains after the end of the newly recorded audio.</p>
+ 
+ <p>Is there a way I can get the AudioFile to truncate at the point the user starts to insert the new audio, is there some other way I can remove the old audio starting at the insert position or is there a better way about going about this task?</p>
+ 
+ <p>Thanks</p>"
+2651010,116484,0,GDI+ on 64bit systems,"<p>Our system uses a lot of large Bitmaps (System.Drawing.Bitmap) and sometimes we run out of memory and gets a ""Parameter is not valid"" error. This makes sense, since it can be difficult to allocate large continuous chunk of memory. </p>
+ 
+ <p>So the question is... If we upgraded the system to 64bit, would this problem go away?</p>"
+2651060,271753,0,Sqlite3 query in objective c,"<pre><code> -(IBAction)ButtonPressed:(id)sender
+  { 
+  const char *sql = ""SELECT AccessCode FROM UserAccess"";
+  NSString *sqlns;
+  sqlns = [NSString stringWithUTF8String:sql];
+  if([Password.text isEqual:sqlns])
+  {
+  NSLog(@""Correct"");
+  }
+  else {
+  NSLog(@""Wrong"");
+  }
+ 
+  NSLog(@""%@"",sqlns);
+  }
+ </code></pre>
+ 
+ <p>Noob here , 
+ At NSLog I am able to print ""SELECT AccessCode FROM UserAccess"" where as let say the access code is 1234 , which I want .The challenge is to execute the command so that I can retrieve
+ 1234 from the Column AccessCode in the Table UserAccess in the datable UserAcess.sqlite
+ My Database and table name are same oops .
+ In the appdelegate I Have : 
+ ///</p>
+ 
+ <pre><code>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions { 
+ 
+  // Override point for customization after app launch 
+  [self createEditableCopyOfDatabaseIfNeeded]; 
+  [window addSubview:viewController.view];
+  [window makeKeyAndVisible];
+ 
+  return YES;
+ }
+ </code></pre>
+ 
+ <p>///</p>
+ 
+ <pre><code> - (void)createEditableCopyOfDatabaseIfNeeded {
+ 
+  NSLog(@""Creating editable copy of database"");
+ 
+  // First, test for existence.
+ 
+  BOOL success;
+ 
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+ 
+  NSError *error;
+ 
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+ 
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+ 
+  NSString *writableDBPath = [documentsDirectory stringByAppendingPathComponent:@""UserAccess.sqlite""];
+ 
+  success = [fileManager fileExistsAtPath:writableDBPath];
+ 
+  if (success) return;
+ 
+  // The writable database does not exist, so copy the default to the appropriate location.
+ 
+  NSString *defaultDBPath = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@""UserAccess.sqlite""];
+ 
+  success = [fileManager copyItemAtPath:defaultDBPath toPath:writableDBPath error:&amp;error];
+ 
+  if (!success) {
+ 
+  NSAssert1(0, @""Failed to create writable database file with message '%@'."", [error localizedDescription]);
+ 
+  }
+ 
+  }
+ </code></pre>
+ 
+ <p>///</p>
+ 
+ <pre><code>+(sqlite3 *) getNewDBConnection{
+ 
+  sqlite3 *newDBconnection;
+ 
+  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+ 
+  NSString *documentsDirectory = [paths objectAtIndex:0];
+ 
+  NSString *path = [documentsDirectory stringByAppendingPathComponent:@""UserAccess.sqlite""];
+ 
+  // Open the database. The database was prepared outside the application.
+ 
+  if (sqlite3_open([path UTF8String], &amp;newDBconnection) == SQLITE_OK) {
+ 
+  NSLog(@""Database Successfully Opened :) "");
+ 
+  } else {
+ 
+  NSLog(@""Error in opening database :( "");
+ 
+  }
+ 
+  return newDBconnection;
+ 
+  }
+ </code></pre>
+ 
+ <p>Please help :(</p>"
+2651070,315619,5,How to make button with custom background image show click animation in Android,"<p>How to make button show it is clicked (by setting it go down/some change) for buttons using custom background image in Android.
+ I do not want to include more images and set different one to different states like shown in google hello views example.
+ Thanks.</p>"
+2651080,314010,1,Rails: Extracting the raw url from the request,"<p>I am working with Rails 2.2.</p>
+ 
+ <p>The required behaviour is as follows:</p>
+ 
+ <p>I have a link(with a ajax link embedded)</p>
+ 
+ <p>xyz.com/admin#page1</p>
+ 
+ <p>When I go to the above page, I should be redirected to the login page, if I am not logged in.</p>
+ 
+ <p>After I log in, I should be taken back to</p>
+ 
+ <p>xyz.com/admin#page1</p>
+ 
+ <p>For this I need to store the url in session when I visit any page.</p>
+ 
+ <p>The problem is that when I do request.uri, I get
+ xyz.com/admin</p>
+ 
+ <p>But I want to store
+ xyz.com/admin#page1</p>
+ 
+ <p>Regards,
+ Pankaj</p>"
+2651090,84952,10,Firefox add-on for examining z-indexes,<p>I'm working on a fairly large site and am having trouble managing z-indexes. Is there a Firefox add-on that will look at a page and give me an ordered list of every element with a z-index declared? That would save a ton of times for the cases where a z-index was wrong or hard to find.</p>
+2651120,269521,0,I want a feature to temporarly block my website from accessing?,"<p>Hi from time to time , i want to shutdown my site for maintenance ...</p>
+ 
+ <p>How could i do this? I've seen a option in phpbb to block the site by admin and then unblock them..</p>
+ 
+ <p>Is there any apis for this or tell me a method of how to do this?</p>
+ 
+ <p>I'm using php for my website..</p>"
+2651170,279259,6,Immutable classes in C++,"<p>In one of my projects, I have some classes that represent entities that cannot change once created, aka. immutable classes.</p>
+ 
+ <p>Example : A class <code>RSAKey</code> that represent a RSA key which only has const methods. There is no point changing the existing instance: if you need another one, you just create one.</p>
+ 
+ <p>My objects sometimes are heavy and I enforced the use of smart pointers to avoid <strong>deep</strong> copy.</p>
+ 
+ <p>So far, I have the following pattern for my classes:</p>
+ 
+ <pre><code>class RSAKey : public boost::noncopyable, public boost::enable_shared_from_this&lt;RSAKey&gt;
+ {
+  public:
+ 
+  /**
+  * \brief Some factory.
+  * \param member A member value.
+  * \return An instance.
+  */
+  static boost::shared_ptr&lt;const RSAKey&gt; createFromMember(int member);
+ 
+  /**
+  * \brief Get a member.
+  * \return The member.
+  */
+  int getMember() const;
+ 
+  private:
+ 
+  /**
+  * \brief Constructor.
+  * \param member A member.
+  */
+  RSAKey(int member);
+ 
+  /**
+  * \brief Member.
+  */
+  const int m_member;
+ };
+ </code></pre>
+ 
+ <p>So you can only get a pointer (well, a <em>smart</em> pointer) to a const RSAKey. To me, it makes sense, because having a non-const reference to the instance is useless (it only has const methods).</p>
+ 
+ <p>Do you guys see any issue regarding this pattern ? Are immutable classes something common in C++ or did I just created a monster ?</p>
+ 
+ <p>Thank you for your advices !</p>"
+2651190,221325,0,Opening a PDF in Safari on the iPhone,<p>Is it possible to open a PDF from a website in Safari in order to save it to local disk?</p>
+2651210,273396,9,System.exit(0) in java,"<p>I am writing an application program using swing. I need to exit from the application by clicking the <code>JButton</code> for that can i use <code>System.exit()</code> or should i use some other methods, which is the best practice. If calling <code>System.exit()</code> is not best practice then tell the reason and tell the alternative way to exit from the application.</p>"
+2651220,161628,1,ldd output showing shared object file whose function is not called,"<p>I ran ldd command on an executable created by Open MPI. It shows a reference to libpthread.so
+ Using LD_PRELOAD variable I created my own implementation of pthread_create, but from the it output it seems that MPI implementation is not calling pthread_create as I had expected.
+ Why does ldd show pthread so file in output if it is not being used?
+ does Open MPI not use a separate MPI thread for every node to implement the functionality?</p>"
+2651260,318260,4,Change highlight color in hierarchical TreeView,"<p>I have got a TreeView with a HierarchicalDataTemplate.</p>
+ 
+ <pre><code>&lt;HierarchicalDataTemplate x:Key=""treeViewItemTemplate"" ItemsSource=""{Binding GetChildren}""&gt;
+  &lt;DockPanel Margin=""0,8,8,0""&gt;
+  &lt;Image Source=""{Binding GetImage}"" Width=""16"" Height=""16"" /&gt;
+  &lt;local:MonitorTriStateCheckBox Margin=""4,0,0,0"" IsChecked=""{Binding IsChecked}"" Click=""CheckBox_Clicked"" Tag=""{Binding UniqueKey}"" Style=""{DynamicResource CheckBox}""&gt;&lt;/local:MonitorTriStateCheckBox&gt;
+  &lt;TextBlock Margin=""4,0,0,0"" Text=""{Binding Name}"" Style=""{DynamicResource TextBlock}""&gt;
+  &lt;/TextBlock&gt;
+  &lt;/DockPanel&gt;
+  &lt;HierarchicalDataTemplate.Triggers&gt;
+  &lt;Trigger Property=""TreeViewItem.IsSelected"" Value=""True""&gt;
+  &lt;Setter Property=""TreeViewItem.Background"" Value=""Orange"" /&gt;
+  &lt;/Trigger&gt;
+  &lt;/HierarchicalDataTemplate.Triggers&gt;
+ &lt;/HierarchicalDataTemplate&gt;
+ </code></pre>
+ 
+ <p>As you can see in the code, i set the is selected Trigger of the TreeViewItem, but this has no effect. I alos tried this:</p>
+ 
+ <pre><code>&lt;TreeView.ItemContainerStyle&gt;
+  &lt;Style TargetType=""{x:Type TreeViewItem}""&gt;
+  &lt;Setter Property=""IsExpanded"" Value=""{Binding IsExpanded, Mode=TwoWay}"" /&gt;
+  &lt;Setter Property=""Visibility"" Value=""{Binding IsVisible, Mode=TwoWay}"" /&gt;
+  &lt;Style.Triggers&gt;
+  &lt;Trigger Property=""IsSelected"" Value=""True""&gt;
+  &lt;Setter Property=""Background"" Value=""Orange"" /&gt;
+  &lt;/Trigger&gt;
+  &lt;/Style.Triggers&gt;
+  &lt;/Style&gt;
+ &lt;/TreeView.ItemContainerStyle&gt;
+ </code></pre>
+ 
+ <p>But that had no effect either.</p>
+ 
+ <p>Has anyone got an idea what to do, to change the hightlight color of a TreeViewItem?</p>"
+2651310,133566,2,WinForms modal windows alt+tab problem,"<p>Suppose multiple <strong>Modal Windows</strong> shown above each other. 
+ All of those have <code>ShowInTaskbar = false</code>, which means that in the <code>TaskBar</code> you only see the <code>MainForm</code> and all Modal Windows are hidden.</p>
+ 
+ <p>Now you press <strong>ALT+ TAB</strong> and the most upper modal Windows disappears. But you cannot get it back in front. </p>
+ 
+ <p>How should be this done correctly in your opinion?</p>"
+2651350,164002,0,Root Path Problem in asp.net?,"<p>in my application a link button is there when i click on it it redirect to another page. But when i click on that page it is giving error like this...</p>
+ 
+ <p>Cannot use a leading .. to exit above the top directory. 
+ Description: An unhandled exception occurred during the execution of the current web request. Please review the stack trace for more information about the error and where it originated in the code. </p>
+ 
+ <p>Exception Details: System.Web.HttpException: Cannot use a leading .. to exit above the top directory.</p>"
+2651360,261566,91,How to provide animation when calling another activity in Android?,"<p>I have two Activities A and B. I want to have the shrink Animation when 
+ Activity A calls B and maximize animation when Activity B calls A. I don't need the animation xml files for this.</p>
+ 
+ <p>When we call another Activity in Android it gives its default animation and then it calls shrink animation. </p>
+ 
+ <p>What I want is that the default animation should not occur and the animation that I want should occur.</p>
+ 
+ <p>Can we actually give the animation when calling another Activity?</p>"
+2651390,318340,2,Is usage of Custom Attributes in C# is memory/performance bottleneck?,"<p>i wana decroate my methods and gui controls with custom attributes. I want to know how attributes consume memory or affects the application performance. What is the lifecycle of Attribute. means when an object of a class with custom attributes in methods, properties and on its own. is instantiated and then disposed. IF all custom attribetes instances are also disposed with the descruction of objec , or stil remains in memory ?</p>"
+2651520,299893,0,tiny mce pop ups blank in smarty,"<p>I am using tiny mce with smarty but it shows blank pop ups such as in image,anchor,preview buttons. The code i have used in my tpl file is</p>
+ 
+ <blockquote>
+  <p>`{literal} 
+  
+  tinyMCE.init({ // General options mode
+  : ""textareas"", theme : ""advanced"",
+  plugins :
+  ""safari,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template"",</p>
+  
+  <p>// Theme options
+  theme_advanced_buttons1 :
+  ""save,newdocument,|,bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,styleselect,formatselect,fontselect,fontsizeselect"",
+  theme_advanced_toolbar_location :
+  ""top"", theme_advanced_toolbar_align :
+  ""left"",
+  theme_advanced_statusbar_location :
+  ""bottom"", theme_advanced_resizing :
+  true,</p>
+  
+  <p>// Example content CSS (should be your
+  site CSS) content_css :
+  ""css/content.css"",</p>
+  
+  <p>// Drop lists for
+  link/image/media/template dialogs
+  template_external_list_url :
+  ""lists/template_list.js"",
+  external_link_list_url :
+  ""lists/link_list.js"",
+  external_image_list_url :
+  ""lists/image_list.js"",
+  media_external_list_url :
+  ""lists/media_list.js"",</p>
+  
+  <p>// Replace values for the template
+  plugin template_replace_values : {
+  username : ""Some User"", staffid :
+  ""991234"" } }); {/literal}`</p>
+ </blockquote>"
+2651530,318300,0,How to take name in one preg_match,"<p>I am trying to extract just the names result from the hypothetical HTML file below.</p>
+ 
+ <pre><code>&lt;ul class=""cat""&gt;
+ &lt;li&gt;sport&lt;/li&gt;
+ &lt;li&gt;movie&lt;/li&gt;
+ &lt;/ul&gt;
+ &lt;ul class=""person-list""&gt;
+ &lt;li&gt;name 1&lt;/li&gt;
+ &lt;li&gt;name 2&lt;/li&gt;
+ &lt;li&gt;name 3&lt;/li&gt;
+ &lt;li&gt;name 4&lt;/li&gt;
+ &lt;li&gt;name 5&lt;/li&gt;
+ &lt;li&gt;name 6&lt;/li&gt;
+ &lt;/ul&gt;
+ </code></pre>
+ 
+ <p>Ideally, the result should come in an array format like the one below:
+ Array( 
+ name 1 , 
+ name 2 , 
+ name 3 , .......... 
+ )</p>
+ 
+ <p>OK I can easily do this with 2 regex matches but I was wondering if I can do it with just one.</p>"
+2651620,314203,0,How to get os version of remote computer using computer name or ip address?,"<p>I tried to get os version of remote computer using ip address with WMI ,It shows ""RPC server unavailable"" error.</p>
+ 
+ <p>If anybody have solution for getting remote system information without WMI in vbnet,
+ Please help me</p>"
+2651660,130529,1,Can we paint a JTable cell partially?,<p>Is it possible to paint a JTable cell alone partially?Like 40% of it is green remaining is red?</p>
+2651670,307007,1,PHP conditional loop help,"<p>Hi there in my database I have 3 columns, is_contract, is_permenant and is_temporary. Within these columns there is either a Y or N value. </p>
+ 
+ <p>I am using these columns to echo onto the page what kind of work someone is looking for, my problem is that the user can be looking for more than one type of work, I am currently running 3 if statements to determine what to echo to the page, however I am struggling to add a comma if more than one of the statemnts returns as true, below is my code so far, </p>
+ 
+ <pre><code>&lt;?php
+  if($rslt['is_contract'] == 'Y') {
+  echo ""Contract "";
+ }
+  if($rslt['is_permanent'] == 'Y') {
+  echo ""Permanent "";
+ }
+ if($rslt['is_temporary'] == 'Y') {
+  echo ""Temporary"";
+ }
+ ?&gt;
+ </code></pre>"
+2651680,97658,4,Grouping string by comma between brackets,"<p>Response to : <a href=""http://stackoverflow.com/questions/1454913/regular-expression-to-find-a-string-included-between-two-characters-while-exclud"">http://stackoverflow.com/questions/1454913/regular-expression-to-find-a-string-included-between-two-characters-while-exclud</a>
+ <br /><br />
+ Hi,I'm looking for a regex pattern that applies to my string including brackets:<br /></p>
+ 
+ <p><strong>[1,2,3,4,5] [abc,ef,g] [0,2,4b,y7] <br/></strong>
+ could be anything including word,digit,non-word together or separated.</p>
+ 
+ <p>I wish to get the group between brackets by <strong><code>\[(.*?)\]</code></strong>
+ but what is the regex pattern that will give me the group between brackets and sub-group strings separated by commas so that the result may be following ??</p>
+ 
+ <pre>
+ Group1 : 1,2,3,4,5
+  Group1: 1
+  Group2: 2
+  Group3: 3
+  Group4: 4
+  Group5: 5
+ 
+ Group2 : abc,ef,g
+  Group1: abc
+  Group2: ef
+  Group3: g
+ 
+ etc ..
+ </pre>
+ 
+ <p>Thank you for your help</p>"
+2651700,157820,1,Ideal directory structure for web application,"<p>I'm about to create a user based website and will have to store photo, docs and other data for each user.</p>
+ 
+ <p>If I take a silly number like 1 000 000 000 users, I believe than one folder with 1 000 000 000 won't be the fastest thing in the world! So I was thinking of creating something like </p>
+ 
+ <p>1st level : [a-z]
+ 2nd level : [a-z] 
+ 3rd level : [a-z] </p>
+ 
+ <p>Therefor bobby will be in /b/o/b/by </p>
+ 
+ <p>But this also mean that it won't be spread equaly, because there will be very few user starting with a z and many more with a m,s,l ...</p>
+ 
+ <p>so I was thinking of using a user id 
+ such as ""000000000001"", ""000000000001"" etc... </p>
+ 
+ <p>1st level : [000-999]
+ 2nd level : [000-999]
+ 3rd level : [000-999]</p>
+ 
+ <p>therefore data of the user 000000000001 will be store in /data/000/000/000/001
+ then I will be sure to have a maximum of 1000 folder in each level. </p>
+ 
+ <p>What do you guys think about it, what I should do or not do ? </p>
+ 
+ <p>The server will be running Centos 5.4 with EXT3 on raid 1, if the I/O get's too bad 
+ i will probably go for a raid 10. </p>"
+2651730,304742,0,"Equivalent for Java's System.getProperty(""java.io.tmpdir"") in C?","<p>As the title says, the <code>java.io.tmpdir</code> property in Java is really nice, and I can't find an equivalent for C. I'm writing for Windows and in Visual Studio. I don't want to just use something like <code>C:\Temp</code> because in later versions of windows the appropriate directory could be something like <code>C:\Users\[UserName]\AppData\Local\Temp</code> and a way to retrieve this would be much easier. I want a directory and not just a temp file because I'm downloading and executing a file from the internet. </p>
+ 
+ <p>As a side note, if anyone can give me tips about how to better google for C stuff it would be much appreciated :)</p>"
+2651740,197157,2,Online Presence in SharePoint 2010,"<p>Has anyone tried with online presence in SharePoint 2010? I used to take help of imnrc javascript function in MOSS 2007 but the same does not seem to work in SharePoint 2010.</p>
+ 
+ <p>Thanks,</p>"
+2651750,318334,8,read email Using Pop3 client on asp.net web page,"<p>I want to read Emails through pop3.
+ On my asp.net web page how to do let me know,</p>
+ 
+ <p>which control should I use for showing email?</p>"
+2651760,317199,0,Can I build and debug c++ programs on remote machine?,"<p>I am on windows XP want to build the programs on linux remote pc
+ i have eclipse Ganymede, CDT, RSE installed on remote machine... but how to configure all this?
+ am I doing correct? could anybody suggest</p>"
+2651780,197878,14,Are variables in the main methods static,"<p>Its a well known fact that a static method can work only on static members.</p>
+ 
+ <pre><code>public static void Main()
+ {
+  Test t1 = new Test();
+ }
+ </code></pre>
+ 
+ <p>Here the <code>Main</code> method is static, but I haven't declared <code>t1</code> as static. Is it implicitly static?</p>"
+2651800,318338,1,Highlighting dates between two selected dates jQuery UI Datepicker,"<ul>
+ <li>I have one datepicker with numberOfMonths set to 2.</li>
+ <li>Arrival Date and Departure Date are determined using this logic (within onSelect):</li>
+ </ul>
+ 
+ <pre>
+ <code>
+ if ((count % 2)==0) {
+  depart = $(""#datepicker-1"").datepicker('getDate');
+  if (arriv > depart) { temp=arriv; arriv=depart; depart=temp; }
+  $(""#check-in"").val($.datepicker.formatDate(""DD, MM d, yy"",arriv)); 
+  $(""#check-out"").val($.datepicker.formatDate(""DD, MM d, yy"",depart));
+  } else {
+  arriv = $(""#datepicker-1"").datepicker('getDate');
+  depart = null;
+  if ((arriv > depart)&&(depart!=null)) { temp=arriv; arriv=depart; depart=temp; }
+  $(""#day-count"").val('');
+  $(""#check-in"").val($.datepicker.formatDate(""DD, MM d, yy"",arriv));
+  $(""#check-out"").val($.datepicker.formatDate(""DD, MM d, yy"",depart));
+  }
+ 
+  if(depart!=null) { 
+  diffDays = Math.abs((arriv.getTime() - depart.getTime())/(oneDay)); 
+  if (diffDays == 0) { $(""#day-count"").val((diffDays+1)+' Night/s'); } else { $(""#day-count"").val(diffDays+' Night/s'); }
+ </code> }
+ </pre>
+ 
+ <ul>
+ <li>Getting the number of days within these 2 dates has no problem</li>
+ <li>What I want now is highlight those dates starting from the Arrival to Departure</li>
+ <li>I tried working around the onSelect but had no luck.</li>
+ <li>I am now using beforeShowDay to highlight these dates but I can't seem to figure it out</li>
+ <li>Got a sample from <a href=""http://stackoverflow.com/questions/1699834/jquery-ui-datepicker-how-can-i-on-select-highlight-a-particular-range-of-date"">here</a></li>
+ <li>Basically, it is customized to highlight 11 or 12 days after the selected date (Here's the code from that link).</li>
+ </ul>
+ 
+ <pre>
+ 
+  $('#datePicker').datepicker({beforeShowDay: function(date) {
+  if (selected != null && date.getTime() > selected.getTime() &&
+  (date.getTime() - selected.getTime()) 
+ </pre>
+ 
+ <ul>
+ <li>Since I am new to using the UI, and the logic is not clear to me yet, I can't seem to figure this out. Any ideas on how I can make this highlight dates between the Arrival and Departure using my aforementioned logic used in determining the two?</li>
+ </ul>"
+2651810,169640,1,Overridden button control escaping content. How to stop it?,"<p>I've got an ASP.Net button control that I have overridden to provide different functionality. the code looks as follows.. I'm overriding the Render method to surround the control with an <code>&lt;a&gt;</code>...</p>
+ 
+ <pre><code> /// &lt;summary&gt;
+  /// Render Method
+  /// &lt;/summary&gt;
+  /// &lt;param name=""writer""&gt;&lt;/param&gt;
+  protected override void Render(HtmlTextWriter writer)
+  {
+  base.CssClass = ""euva-button-decorated"";
+  writer.Write(""&lt;a class=\""euva-button\""&gt;"");
+  base.Render(writer);
+  writer.Write(""&lt;/a&gt;"");
+  } 
+ </code></pre>
+ 
+ <p>When I check the generated source on the page, I find that where ASP.Net has injected its click handler it does the following...</p>
+ 
+ <pre><code> &lt;a class=""euva-button""&gt;&lt;input type=""submit"" name=""TestButton"" value=""Test Button"" onclick=""clickOnce(this);WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&amp;quot;TestButton&amp;quot;, &amp;quot;&amp;quot;, true, &amp;quot;&amp;quot;, &amp;quot;&amp;quot;, false, false))"" id=""TestButton"" class=""euva-button-decorated"" /&gt;&lt;/a&gt;
+ </code></pre>
+ 
+ <p>... it seems to be escaping the output for the double quotes which means that the browser cannot understand the javascript.</p>
+ 
+ <p>How do I make the render method not escape the injected ASP.Net client click handler ??</p>
+ 
+ <p>Note I also have my own client click handler which is declared declaratively in the page mark-up.</p>"
+2651850,316224,6,Can func get the lineno who call itself? (C/C++),"<p>I've a problem , as the following code discribe itself. <br></p>
+ 
+ <pre><code>1 #include&lt;stdlib.h&gt;
+ 2 #include&lt;stdio.h&gt;
+ 3 void log()
+ 4 {
+ 5 printf(""Log [Line:%d]\n"",__LINE__);
+ 6 }
+ 7 int main()
+ 8 {
+ 9 log();
+ 10 log();
+ 11 }
+ </code></pre>
+ 
+ <p>The expected result is <br>
+ Log [Line:9] <br>
+ Log [Line:10] <br>
+ But, the fact is<br>
+ Log [Line:5] <br>
+ Log [Line:5] <br></p>
+ 
+ <p>No surprising, <strong>LINE</strong> has been substituted at the pre-process stage as 5. <br>
+ My Question is, how to design the log function to get the expected result? <br>
+ Thanks!</p>"
+2651940,225727,0,Rails form with a better URL,"<p>Wow, switching to REST is a different paradigm for sure and is mainly a headache right now.</p>
+ 
+ <p>view</p>
+ 
+ <pre><code>&lt;% form_tag (businesses_path, :method =&gt; ""get"") do %&gt;
+ &lt;%= select_tag :business_category_id, options_for_select(@business_categories.collect {|bc| [bc.name, bc.id ]}.insert(0, [""All Containers"", 0]), which_business_category(@business_category) ), { :onchange =&gt; ""this.form.submit();""} %&gt;
+ &lt;% end %&gt;
+ </code></pre>
+ 
+ <p>controller </p>
+ 
+ <pre><code>def index
+ @business_categories = BusinessCategory.find(:all)
+ if params[:business_category_id].to_i != 0
+  @business_category = BusinessCategory.find(params[:business_category_id])
+  @businesses = @business_category.businesses
+ else
+  @businesses = Business.all 
+ end
+ respond_to do |format|
+  format.html # index.html.erb
+  format.xml { render :xml =&gt; @businesses }
+ end
+ </code></pre>
+ 
+ <p>end</p>
+ 
+ <p>routes </p>
+ 
+ <pre><code>map.resources 
+ </code></pre>
+ 
+ <p>What I want to to is get a better URL than what this form is presenting which is the following:
+ <a href=""http://localhost:3000/businesses?business_category_id=1"" rel=""nofollow"">http://localhost:3000/businesses?business_category_id=1</a></p>
+ 
+ <p>Without REST I would have do something like
+ <a href=""http://localhost:3000/business/view/bbq"" rel=""nofollow"">http://localhost:3000/business/view/bbq</a> <code>bbq</code> as permalink or I would have done <a href=""http://localhost:300/business_categories/view/bbq"" rel=""nofollow"">http://localhost:300/business_categories/view/bbq</a> and get the business that are associated with the category but I don't really know the best way of doing this.</p>
+ 
+ <p>So the two questions are what is the best logic of finding a business by its categories using the latter form and number two how to get that in a pretty URL all through RESTful routes in Rails.</p>"
+2651960,312613,3,Java / Spring / JSP - how to output value added using ModelAndView.addObject,"<p>I have the following code in my controller</p>
+ 
+ <pre><code>final ModelAndView m = new ModelAndView();
+ m.addObject(""date"", ""15"" );
+ </code></pre>
+ 
+ <p>In my view I have been able to output this by doing</p>
+ 
+ <pre><code>${date}
+ </code></pre>
+ 
+ <p>However how can I print it out using out.print or assign it to a new variable
+ e.g.</p>
+ 
+ <pre><code>&lt;% out.print( ${date} ) %&gt;
+ </code></pre>
+ 
+ <p>Thanks</p>"
+2652000,76735,4,will_paginate route only works on page > 1,"<p>I have the following routes defined:</p>
+ 
+ <pre><code>map.resources :categories, :has_many =&gt; :downloads
+ map.resources :downloads, :member =&gt; {:go =&gt; :get}, :collection =&gt; {:tag =&gt; :get}
+ map.connect '/downlods/page/:page', :controller =&gt; 'downloads', :action =&gt; 'index'
+ map.connect '/categories/:category_id/downloads/page/:page', :controller =&gt; 'downloads', :action =&gt; 'index'
+ </code></pre>
+ 
+ <p>For some reason, the first page that the will_paginate helper is called on causes links with ?page=2 to be rendered, while subsequent pages have links with /downloads/page/2. Do you know what might be causing this?</p>"
+2652060,165520,6,Removing left recursion,"<p>The following grammar has left recursion</p>
+ 
+ <pre><code>E= E+T|T
+ T= T*F|F
+ F= a|b|c
+ </code></pre>
+ 
+ <p>How to remove it? Is there any general procedure for it?</p>"
+2652200,318344,1,How to enable ActiveX controls in firefox?,"<p>I have an application which uses ActiveX controls. I want to automate this using Selenium IDE. But when i launch the application i end up in an error message ""Turn on you ActiveX control"". Is there any way to enable ActiveX in FireFox?</p>
+ 
+ <p>Note: I am using User Agent Switcher(as IE7) Addon of firefox to run my application.</p>"
+2652210,193717,1,Web based weekly planner,"<p>I'm looking to implement a web based weekly planner where a user can set when they will be unavailable to work. The state of the week will be saved as a 'varbinary' with a length of 168 which will represent every hour of everyday of a week. The database only needs to store the value of one week as the times unavailable to work will be the same each week. I'm looking for a quick and effective method, possibly based on jquery.</p>
+ 
+ <p>Thanks</p>"
+2652280,174375,3,What are the requirements for HTA files?,"<p>They seem to open in an internet explorer type window, does anyone know:</p>
+ 
+ <ul>
+ <li>How long have HTA files been around? Have they been around since Windows 98?</li>
+ <li>Do they rely on Internet Explorer being installed, and/or a certain version of it?</li>
+ <li>If you choose another browser on the browser selection screen update for Windows 7, will HTA files still work?</li>
+ <li>Do HTA files open on other browsers?</li>
+ <li>Are HTA files windows-only?</li>
+ </ul>
+ 
+ <p>There is a huge lack of documentation on google about HTA files, so it's tricky to work out. I need to present the client with a list of minimum requirements to ensure our HTA content CD will work.</p>"
+2652390,233904,0,QtScript: Passing an array of objects to C++,"<p>I want to pass an array of objects from my QtScript to C++ but I have not been able to figure out how to achieve this. As soon as I create an array, the elements inside it are converted to strings before I can access them.</p>
+ 
+ <p>This is what I have been trying so far:</p>
+ 
+ <pre><code>class myObject : public QObject, public QScriptable 
+ {
+  Q_OBJECT
+ 
+ public Q_SLOTS:
+  void test(QVariantList list);
+ };
+ 
+ void myObject::test(QVariantList list)
+ {
+  for (QVariantList::const_iterator it = list.begin(); it != list.end(); ++it) {
+  QVariant element = *it;
+ 
+  qDebug() &lt;&lt; element.typeName() &lt;&lt; element.toString();
+ 
+  if (element.canConvert&lt;QVariantMap&gt;()) {
+  // Not getting here
+  }
+  }
+ }
+ </code></pre>
+ 
+ <p>The following script</p>
+ 
+ <pre><code>myObject.test([{""foo"": 1, ""bar"": 2}, {""baaz"": 3, ""baaaz"": 4}]);
+ </code></pre>
+ 
+ <p>prints</p>
+ 
+ <pre><code>""QString"" ""[object Object]""
+ ""QString"" ""[object Object]""
+ </code></pre>
+ 
+ <p>I am using Qt 4.6...</p>"
+2652400,228401,0,Word and IE (Close Word needs to Refresh IE),"<p>I am able to open Word with a specific template from the browser, but when Word closes and the user returns to the browser the page needs to be refreshed.</p>"
+2652430,316465,4,Enum values doubts?,"<p>Is there any possible way to do any arithmetic operations on enum values?</p>
+ 
+ <pre><code>enum Type{Zero=0,One,Two,Three,Four,Five,Six,Seven,Eight,Nine};
+ 
+ main()
+ {
+  enum Type Var = Zero;
+ 
+  for(int i=0;i&lt;10;i++)
+  {
+  switch(Var)
+  {
+  case Zero:
+  /*do something*/
+  case One:
+  /*Do something*/
+  .....
+  }
+  Var++;
+  }
+ }
+ </code></pre>
+ 
+ <p>(I know that this increment is not possible, but is there anyway by which we can have this variable named Var increment?)</p>"
+2652460,12918,186,How to get the name of the current method from code,"<p>I know you can do</p>
+ 
+ <pre><code>this.GetType().FullName
+ </code></pre>
+ 
+ <p><strong>Edit courtesy of @Pasi Savolainen</strong></p>
+ 
+ <p>To get</p>
+ 
+ <blockquote>
+  <p>My.Current.Class</p>
+ </blockquote>
+ 
+ <p>But what can I call to get</p>
+ 
+ <blockquote>
+  <p>My.Current.Class.CurrentMethod</p>
+ </blockquote>"
+2652500,184882,7,Email Regular Expression Validation,"<p>Can anyone correct the expression below to also not allow blank field?</p>
+ 
+ <pre><code>&lt;asp:RegularExpressionValidator ID=""expEmail"" runat=""server"" ControlToValidate=""txtEmail"" ErrorMessage=""valid email address required"" ValidationExpression=""^([a-zA-Z][\w\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]){1,70}$""&gt;&lt;/asp:RegularExpressionValidator&gt;
+ </code></pre>"
+2652560,312751,0,Grails Illegel Exception,"<p>Can any one tell me when this error occurs . I suspect this is coming when added any new js in Grails .</p>
+ 
+ <p>I'm unable to dig this :</p>
+ 
+ <p><b>16 Apr, 2010 4:58:25 PM org.apache.catalina.loader.WebappClassLoader loadClass<br/>
+ INFO: Illegal access: this web application instance has been stopped already. Could not load org.codehaus.groovy.grails.plugins.codecs.HTMLCodecBeanInfo. The eventual following stack trace is caused by an error thrown for debugging purposes as well as to attempt to terminate the thread which caused the illegal access, and has no functional impact.<br/>
+ java.lang.IllegalStateException</b></p>
+ 
+ <p>thanks in advance,<br/>
+ srinath</p>"
+2652630,312975,68,How to get all files under a specific directory in MATLAB?,"<p>I need to get all those files under <code>D:\dic</code> and loop over them to further process individually.</p>
+ 
+ <p>Does MATLAB support this kind of operations?</p>
+ 
+ <p>It can be done in other scripts like PHP,Python...</p>"
+2652690,318452,1,Crystal reports - connection to JDBC failed,"<p>I am trying to make a connection to JDBC(JNDI) in Crystal Reports and I get the following error : </p>
+ 
+ <p>Invalid Argument provided.<br>
+ Details: Java Server startup failure. Please verify the PATH (JDK), CLASSPATH and IORFileLocation properties in the CRConfig.xml file. In addition, please verify you are using JDK 1.4. </p>
+ 
+ <p>I am using the connector : mysql-connector-java-5.1.6-bin.jar, jDK 1.6. </p>
+ 
+ <p>Thank you!</p>"
+2652710,296559,3,Need to add underscore to my regex,"<p>I'm new to regular expression and just can't seem to figure this out:</p>
+ 
+ <pre><code>'/^[A-Za-z0-9](?:.[A-Za-z0-9]+)$/'
+ </code></pre>
+ 
+ <p>As it's right now it allows dots anytime after the first char and I like to add <code>_</code> so that it allows both.
+ Thanks</p>"
+2652760,750,15,How to convert a gi-normous integer (in string format) to hex format? (C#),"<p>Given a potentially huge integer value (in C# string format), I want to be able to generate its hex equivalent. Normal methods don't apply here as we are talking arbitrarily large numbers, 50 digits or more. The techniques I've seen which use a technique like this:</p>
+ 
+ <pre><code>// Store integer 182
+ int decValue = 182;
+ // Convert integer 182 as a hex in a string variable
+ string hexValue = decValue.ToString(""X"");
+ // Convert the hex string back to the number
+ int decAgain = int.Parse(hexValue, System.Globalization.NumberStyles.HexNumber);
+ </code></pre>
+ 
+ <p>won't work because the integer to convert is too large.</p>
+ 
+ <p>For example I need to be able to convert a string like this:</p>
+ 
+ <p>843370923007003347112437570992242323 </p>
+ 
+ <p>to its hex equivalent.</p>
+ 
+ <p>these don't work:</p>
+ 
+ <p><a href=""http://stackoverflow.com/questions/1139957/c-convert-int-to-hex-and-back-again"">C# convert integer to hex and back again</a>
+ <a href=""http://stackoverflow.com/questions/74148/how-to-convert-numbers-between-hex-and-decimal-in-c"">How to convert numbers between hexadecimal and decimal in C#?</a></p>"
